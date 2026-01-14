@@ -14,6 +14,60 @@ public class DBSampleMain {
 		
 		DeptDAO deptDAO = new DeptDAO();
 		
+		//Insert 저장
+		int r1 = deptDAO.saveDept(70, "COMPUTER", "SEOUL");
+		if(r1 > 0) {
+			System.out.println("저장이 잘 됐나보다~~");
+		}
+		
+		Dept saveD1 = new Dept();
+		saveD1.setDeptno(90);
+		saveD1.setDname("QA");
+		saveD1.setLoc("BUSAN");
+		
+		int r2 = deptDAO.saveDept(saveD1);
+		if(r2 > 0) {
+			System.out.println("객체 매개변수로 넘긴 r2도 저장이 잘 됐나보다~~");
+		}
+		
+		//여러개 List 형태로 저장
+		List<Dept> saveDeptList = new ArrayList<Dept>();
+		saveDeptList.add(new Dept(81, "DNAME81", "LOC81"));
+		saveDeptList.add(new Dept(82, "DNAME82", "LOC82"));
+		saveDeptList.add(new Dept(83, "DNAME83", "LOC83"));
+		
+		//저장
+		int r3 = 0;
+		for(Dept d : saveDeptList) {
+			int result = deptDAO.saveDept(d);
+			r3 += result;
+			if(result > 0 ) {
+				System.out.println("dept 저장 잘됨");
+			}
+		}
+		System.out.println("총 몇개 저장되었나 저장된 행 수 : " + r3);
+
+		//Delete 삭제
+		int rd1 = deptDAO.removeDept(70);
+		int rd2 = deptDAO.removeDept(81);
+		int rd3 = deptDAO.removeDept(82);
+		int rd4 = deptDAO.removeDept(83);
+		
+		//Dept rmd = new Dept(90, "name", "loc");
+		Dept rmd = new Dept(90, null, null);
+		int rd5 = deptDAO.removeDept(rmd);
+		
+		if(rd1 > 0) {
+			System.out.println("deptno 70 번 삭제됨");
+		}
+		
+		if(rd5 > 0) {
+			System.out.println("deptno 90 번 삭제됨");
+		}
+		
+		
+		
+		
 		Dept d1 = deptDAO.findDeptByDeptno(20);
 		System.out.println(d1.getDeptno() + " " + d1.getDname() + " " + d1.getLoc());
 		System.out.println(d1.toString());

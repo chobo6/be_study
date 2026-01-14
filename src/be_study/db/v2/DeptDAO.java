@@ -11,7 +11,7 @@ import java.util.List;
 //DAO   (Data Access Object)
 public class DeptDAO {
 
-	//필드변수화 ? -> 동시사용시 문제 발생할수 있음.
+	// 필드변수화 ? -> 동시사용시 문제 발생할수 있음.
 //	Connection conn;
 //	PreparedStatement psmt;
 //	ResultSet rs;
@@ -23,7 +23,7 @@ public class DeptDAO {
 		ResultSet rs = null; // sql 실행 후 select 결과를 저장하는 객체
 
 		conn = DBConnectionManager.connectDB();
-		
+
 		Dept dept = null;
 
 		// 실행 쿼리 준비
@@ -60,8 +60,6 @@ public class DeptDAO {
 	}
 
 	public Dept findDeptByDname(String dname) {
-
-		
 
 		Connection conn = null; // db 연결
 		PreparedStatement psmt = null; // db연결하여 sql 명령 실행해주는 객체
@@ -106,8 +104,6 @@ public class DeptDAO {
 
 	public List<Dept> findDeptList() {
 
-		
-
 		Connection conn = null; // db 연결
 		PreparedStatement psmt = null; // db연결하여 sql 명령 실행해주는 객체
 		ResultSet rs = null; // sql 실행 후 select 결과를 저장하는 객체
@@ -147,9 +143,115 @@ public class DeptDAO {
 		} finally {
 			DBConnectionManager.disconnectDB(conn, psmt, rs);
 		}
-	
 
 		return deptList;
+	}
+
+	// Select -> 실행 -> DB 테이블 조회 정보 -> ResultSet -> 객체변환
+	// insert update delete -> 실행 -> 적용된 행의 갯수
+
+	// 저장 Insert
+	public int saveDept(int deptno, String dname, String loc) {
+
+		Connection conn = null; // db 연결
+		PreparedStatement psmt = null; // db연결하여 sql 명령 실행해주는 객체
+		ResultSet rs = null; // sql 실행 후 select 결과를 저장하는 객체
+
+		conn = DBConnectionManager.connectDB();
+
+		int result = 0;
+
+		// 실행 쿼리 준비
+		String sqlQuery = " INSERT INTO dept (deptno, dname, loc) VALUES ( ?, ?, ? ) ";
+
+		// 쿼리 실행 후 후속 데이터 처리
+		try {
+			psmt = conn.prepareStatement(sqlQuery);
+
+			// 파라미터 세팅
+			psmt.setInt(1, deptno);
+			psmt.setString(2, dname);
+			psmt.setString(3, loc);
+
+			// rs = psmt.executeQuery(); select
+			// insert, update, delete -> 적용된 행 갯수 -> executeUpdate();
+			result = psmt.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBConnectionManager.disconnectDB(conn, psmt, rs);
+		}
+
+		return result;
+	}
+
+	// 저장 Insert
+	public int saveDept(Dept dept) {
+
+		Connection conn = null; // db 연결
+		PreparedStatement psmt = null; // db연결하여 sql 명령 실행해주는 객체
+		ResultSet rs = null; // sql 실행 후 select 결과를 저장하는 객체
+
+		conn = DBConnectionManager.connectDB();
+
+		int result = 0;
+
+		// 실행 쿼리 준비
+		String sqlQuery = " INSERT INTO dept (deptno, dname, loc) VALUES ( ?, ?, ? ) ";
+
+		// 쿼리 실행 후 후속 데이터 처리
+		try {
+			psmt = conn.prepareStatement(sqlQuery);
+
+			// 파라미터 세팅
+			psmt.setInt(1, dept.getDeptno());
+			psmt.setString(2, dept.getDname());
+			psmt.setString(3, dept.getLoc());
+
+			// rs = psmt.executeQuery(); select
+			// insert, update, delete -> 적용된 행 갯수 -> executeUpdate();
+			result = psmt.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBConnectionManager.disconnectDB(conn, psmt, rs);
+		}
+
+		return result;
+	}
+
+	// 삭제 delete from
+	public int removeDept(int deptno) { //PK 컬럼인 deptno 값을 기준으로 삭제
+		Connection conn = null; // db 연결
+		PreparedStatement psmt = null; // db연결하여 sql 명령 실행해주는 객체
+		ResultSet rs = null; // sql 실행 후 select 결과를 저장하는 객체
+		conn = DBConnectionManager.connectDB();
+
+		int result = 0;
+
+		// 실행 쿼리 준비
+		String sqlQuery = " delete from dept where deptno = ? ";
+
+		// 쿼리 실행 후 후속 데이터 처리
+		try {
+			psmt = conn.prepareStatement(sqlQuery);
+			// 파라미터 세팅
+			psmt.setInt(1, deptno);
+			// rs = psmt.executeQuery(); select
+			// insert, update, delete -> 적용된 행 갯수 -> executeUpdate();
+			result = psmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBConnectionManager.disconnectDB(conn, psmt, rs);
+		}
+		return result;
+	}
+	
+	public int removeDept(Dept dept) { //PK 컬럼인 deptno 값을 기준으로 삭제
+		return removeDept(dept.getDeptno());
 	}
 
 }
