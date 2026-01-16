@@ -101,7 +101,7 @@ public class MidFcstInfoServiceRepository {
 			midTaDTO = new MidTaDTO();
 			midTaDTO.setResultCode(header.get("resultCode").toString());
 			midTaDTO.setResultMsg(header.get("resultMsg").toString());
-			midTaDTO.setTmFc("202601150600");
+			midTaDTO.setTmFc("tmFc");
 			midTaDTO.setRegId(itemObj.get("regId").toString());
 			midTaDTO.setTaMin4(Integer.parseInt(itemObj.get("taMin4").toString()));
 			midTaDTO.setTaMax4(Integer.parseInt(itemObj.get("taMax4").toString()));
