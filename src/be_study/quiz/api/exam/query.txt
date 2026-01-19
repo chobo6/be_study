@@ -1,0 +1,20 @@
+create table v_fcst
+(
+    no number(5) primary key,
+    basedate varchar2(20),
+    basetime varchar2(20),
+    category varchar2(10),
+    fcstdate varchar2(20),
+    fcsttime varchar2(20),
+    fcstvalue varchar2(20),
+    nx number(3),
+    ny number(3)
+);
+
+create sequence v_fcst_seq
+increment by 1
+start with 1;
+
+select * from v_fcst;
+drop table v_fcst;
+drop sequence v_fcst_seq;
